@@ -27,6 +27,6 @@ node {
   }
   
   stage ('Deploy Application on tomcat Container') {
-	sh 'docker run -it -p 8888:8080 -v $(pwd)/target/spring-mvc-showcase.war:/usr/local/tomcat/webapps/spring-mvc-showcase.war harshblog150/tomcat8:jdk8'
+	sh 'sudo docker run -i -p 8888:8080 -v $(pwd)/target/spring-mvc-showcase.war:/usr/local/tomcat/webapps/spring-mvc-showcase.war harshblog150/tomcat8:jdk8'
   }
 }
