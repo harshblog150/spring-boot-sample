@@ -19,7 +19,7 @@ node {
   }
 
   stage('Package the war') {
-   sh 'docker run --rm -v $(pwd) harshblog150/maven:3.6.0-jdk8 mvn package -f $(pwd)'
+   sh 'sudo docker run --rm -v $(pwd) harshblog150/maven:3.6.0-jdk8 mvn package -f $(pwd)'
   }
  
   stage('Test') {
@@ -27,6 +27,6 @@ node {
   }
   
   stage ('Deploy Application on tomcat Container') {
-	sh 'docker run -i -p 8888:8080 -v $(pwd)/target/spring-mvc-showcase.war:/usr/local/tomcat/webapps/spring-mvc-showcase.war harshblog150/tomcat8:jdk8'
+	sh 'sudo docker run -i -p 8888:8080 -v $(pwd)/target/spring-mvc-showcase.war:/usr/local/tomcat/webapps/spring-mvc-showcase.war harshblog150/tomcat8:jdk8'
   }
 }
