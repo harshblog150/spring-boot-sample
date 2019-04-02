@@ -19,7 +19,7 @@ node {
   }
 
   stage('Package the war') {
-   sh 'sudo docker run --rm -v $(pwd) harshblog150/maven:3.6.0-jdk8 mvn package -f $(pwd)'
+   sh 'sudo docker run --rm harshblog150/maven:3.6.0-jdk8 mvn package -f $(pwd)'
   }
  
   stage('Test') {
