@@ -1,8 +1,29 @@
 ---
 - hosts: webservers
   tasks:
-    - name: Git checkout from github
-      git: repo=https://github.com/harshblog150/spring-boot-sample.git
+    - name: Clean WORKSPACE Before Checkout on Ansible Master(Jenkins's Workspace)
+      command: rm -rf $WORKSPACE
+    #shell module uses /bin/bash to execute the command on remote nodes,& "command" module execute on local node.
+    
+    - name: Checkout SCM from github
+      git: repo=http://github.com/harshblog150/myapp.git dest=$WORKSPACE version=develop
 
-    - name: maven build
-      command: mvn clean package
+    - name: Build with Maven from Jenkins-Server itself
+      shell: mvn package && ls -lthr $WORKSPACE/target
+
+    - name: Deploy WAR to tomcat
+      shell: scp $WORKSPACE/target/**/*.war jenkins@tomcathost:/usr/lib/tomcat/webapps mode=0655
+	  
+	#Run Multiple commands with shell module
+
+    - name: Run multiple commands with shell
+      shell: |
+	cd $WORKSPACE/target
+	scp $WORKSPACE/target/**/*.war jenkins@tomcathost1:/usr/lib/tomcat/webapps mode=0655
+	scp $WORKSPACE/target/**/*.war jenkins@tomcathost2:/usr/lib/tomcat/webapps mode=0655
+	scp $WORKSPACE/target/**/*.war jenkins@tomcathost3:/usr/lib/tomcat/webapps mode=0655	  
+
+#   - name: Run test Junit
+#      shell: sh /usr/lib/junit src=$WORKSPACE/target/**/surefire-reports/*.xml
+#      delegate_to: localhost
+
