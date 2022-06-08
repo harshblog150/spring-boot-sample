@@ -1,0 +1,8 @@
+---
+- hosts: webservers
+  tasks:
+    - name: Git checkout from github
+      git: repo=https://github.com/harshblog150/spring-boot-sample.git
+
+    - name: maven build
+      command: mvn clean package
